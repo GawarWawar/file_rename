@@ -28,10 +28,10 @@ def rename_directory(
         path_to_directory (str): Absolute path to the directory
         name_of_file_with_ids (str): Name of file with ids
     """
-    # Find all files in config["folder_with_pictures"]
+    # Find all files in config["path_to_folder_with_pictures"]
     files = [f for f in pathlib.Path(path_to_directory).iterdir() if f.is_file()]
 
-    # Make a list of ids from config["file_with_ids"]
+    # Make a list of ids from config["name_of_file_with_ids"]
     ids = pd.read_csv(name_of_file_with_ids)
     # ASIN - column with all off ids. Only this column matter
         # CSV can contain other columns and it wont affect the process 
