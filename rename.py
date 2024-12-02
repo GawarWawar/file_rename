@@ -65,6 +65,7 @@ def rename_directory(
                 warnings.warn(f"{file.name} was not an image")
 
 def main():
+    config = get_config()
     if config["start_mode"] == 0:
         config = get_config()
         ids_df = get_ids(config["name_of_file_with_ids"])
