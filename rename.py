@@ -34,8 +34,25 @@ def get_ids(name_of_csv_with_ids: str) -> pd.DataFrame:
     """
     return pd.read_csv(name_of_csv_with_ids)
     
+def get_files(path_to_directory: str) -> list[pathlib.Path]:
+    """_summary_
+
+    Args:
+        path_to_directory (str): Absolute path to the directory
+
+    Returns:
+        list[pathlib.Path]: List of all files in the directory represented as pathlib.Path
+    """
+    # Find all files in path_to_directory
+    return [
+        file 
+        for file in pathlib.Path(path_to_directory).iterdir() 
+        if file.is_file()
+    ]
+    
+    
 def rename_directory(
-    path_to_directory: str, 
+    files: list[pathlib.Path], 
     ids_df: pd.DataFrame,
 ) -> None:
     """Find all files in path_to_directory and tries to copy them as images in png format with a new name.
@@ -43,12 +60,9 @@ def rename_directory(
     So images will have a name as: id.part_code.png
 
     Args:
-        path_to_directory (str): Absolute path to the directory
+        files (list[pathlib.Path]): List of all files in the directory represented as pathlib.Path
         name_of_file_with_ids (str): Name of file with ids
-    """
-    # Find all files in path_to_directory
-    files = [f for f in pathlib.Path(path_to_directory).iterdir() if f.is_file()]
-        
+    """        
     # For every id we create a copy of each part
     for id in ids_df.iloc[0]:
         for file in files:
@@ -69,8 +83,9 @@ def main():
     if config["start_mode"] == 0:
         config = get_config()
         ids_df = get_ids(config["name_of_file_with_ids"])
+        files = get_files(config["path_to_folder"])
         rename_directory(
-            config["path_to_folder"],
+            files,
             ids_df
         )
      
