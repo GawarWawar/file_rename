@@ -11,7 +11,7 @@ def get_config() -> dict[str]:
         - starting mode of the program:
             - 0 - standart mode. Read ids from the same directory; look for the folder with images; copy images with new names into result folder.
         - name of csv file with all ids (name_of_file_with_ids)
-        - full Path to folder with picrutes (path_to_folder_with_pictures)
+        - full Path to folder in which program will be performing actions (path_to_folder_with_pictures)
 
     Returns:
         dict[str]: Return dict with configuration
@@ -70,7 +70,7 @@ def main():
         config = get_config()
         ids_df = get_ids(config["name_of_file_with_ids"])
         rename_directory(
-            config["path_to_folder_with_pictures"],
+            config["path_to_folder"],
             ids_df
         )
      
