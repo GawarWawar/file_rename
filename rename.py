@@ -34,8 +34,8 @@ def get_ids(name_of_csv_with_ids: str) -> pd.DataFrame:
     """
     return pd.read_csv(name_of_csv_with_ids)
     
-def get_files(path_to_directory: str) -> list[pathlib.Path]:
-    """_summary_
+def get_directory(path_to_directory: str) -> list[pathlib.Path]:
+    """Get all items in the specified directory
 
     Args:
         path_to_directory (str): Absolute path to the directory
@@ -83,7 +83,7 @@ def main():
     if config["start_mode"] == 0:
         config = get_config()
         ids_df = get_ids(config["name_of_file_with_ids"])
-        files = get_files(config["path_to_folder"])
+        files = get_directory(config["path_to_folder"])
         rename_directory(
             files,
             ids_df
