@@ -7,7 +7,9 @@ import warnings
 
 def get_config() -> dict[str]:
     """Read config.json into dictionary
-    Config file contain: 
+    Config file contain: \n
+        - starting mode of the program:
+            - 0 - standart mode. Read ids from the same directory; look for the folder with images; copy images with new names into result folder.
         - name of csv file with all ids (name_of_file_with_ids)
         - full Path to folder with picrutes (path_to_folder_with_pictures)
 
@@ -63,12 +65,13 @@ def rename_directory(
                 warnings.warn(f"{file.name} was not an image")
 
 def main():
-    config = get_config()
-    ids_df = get_ids(config["name_of_file_with_ids"])
-    rename_directory(
-        config["path_to_folder_with_pictures"],
-        ids_df
-    )
+    if config["start_mode"] == 0:
+        config = get_config()
+        ids_df = get_ids(config["name_of_file_with_ids"])
+        rename_directory(
+            config["path_to_folder_with_pictures"],
+            ids_df
+        )
      
     
                 
