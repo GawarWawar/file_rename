@@ -97,7 +97,7 @@ def rename_directory(
 
 def main():
     config = get_config()
-    if config["start_mode"] == 0:
+    if config["start_mode"] == 1:
         # Standart mode: read ids from the same directory; look for the folder with images; copy images with new names into result folder.
         ids_df = get_ids(config["name_of_file_with_ids"])
         file_pathes = get_directory(config["path_to_folder"], get_all=False)
@@ -105,7 +105,7 @@ def main():
             file_pathes,
             ids_df
         )
-    elif config["start_mode"] >= 1:
+    elif config["start_mode"] >= 2:
         # Advanced mode: read directory with directories; in each directory look for the ids file; perform separate file rename on each directories.
         high_directory = get_directory(config["path_to_folder"])
         for item in high_directory:
