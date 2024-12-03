@@ -65,20 +65,17 @@ def rename_directory(
         files (list[pathlib.Path]): List of all files in the directory represented as pathlib.Path
         name_of_file_with_ids (str): Name of file with ids
         custom_zip_path (pathlib.Path | None, optional): Set in which location zip file will be created. Defaults to None and zip will be located at result folder.
-        custom_zip_name (str | None, optional): Set which name will have zip file after creation. Defaults to None and zip name will be zip_path.name.
+        custom_zip_name (str | None, optional): Set which name will have zip file after creation. Be careful specifing absolute pass. It will change zip location too. Defaults to None and zip name will be zip_path.name.
     """        
     
     # For every id we create a copy of each part
     if custom_zip_path is None:
-        zip_path = pathlib.Path("result/")
-    else:
-        zip_path = custom_zip_path
+        custom_zip_path = pathlib.Path("result/")
+
     if custom_zip_name is None:
-        zip_name = zip_path.name
-    else:
-        zip_name = custom_zip_name
+        custom_zip_name = custom_zip_path.name
     
-    with zipfile.ZipFile(pathlib.Path(zip_path, f"{zip_name}.zip"), "a") as myzip:  
+    with zipfile.ZipFile(pathlib.Path(custom_zip_path, f"{custom_zip_name}.zip"), "a") as myzip:  
         for id in ids_df.iloc[:, 0]:
             for path in file_pathes:
                 # Process only .png image. 
