@@ -82,9 +82,9 @@ def main():
     if config["start_mode"] == 0:
         # Standart mode: read ids from the same directory; look for the folder with images; copy images with new names into result folder.
         ids_df = get_ids(config["name_of_file_with_ids"])
-        files = get_directory(config["path_to_folder"], get_all=False)
+        file_pathes = get_directory(config["path_to_folder"], get_all=False)
         rename_directory(
-            files,
+            file_pathes,
             ids_df
         )
     elif config["start_mode"] >= 1:
@@ -97,9 +97,9 @@ def main():
                 except FileNotFoundError:
                     print(f"{item} is a directory. How ever it does not contain file with {config["name_of_file_with_ids"]}")
                 else:
-                    files = get_directory(item, get_all=False)
+                    file_pathes = get_directory(item, get_all=False)
                     rename_directory(
-                        files,
+                        file_pathes,
                         ids_df
                     )   
      
