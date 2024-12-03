@@ -34,7 +34,7 @@ def get_ids(name_of_csv_with_ids: str) -> pd.DataFrame:
     """
     return pd.read_csv(name_of_csv_with_ids)
     
-def get_directory(path_to_directory: str) -> list[pathlib.Path]:
+def get_directory(path_to_directory: str, get_all: bool = True) -> list[pathlib.Path]:
     """Get all items in the specified directory
 
     Args:
@@ -47,9 +47,8 @@ def get_directory(path_to_directory: str) -> list[pathlib.Path]:
     return [
         file 
         for file in pathlib.Path(path_to_directory).iterdir() 
-        if file.is_file()
+        if file.is_file() or get_all
     ]
-    
     
 def rename_directory(
     files: list[pathlib.Path], 
