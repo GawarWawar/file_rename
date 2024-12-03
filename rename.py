@@ -116,9 +116,15 @@ def main():
                     print(f"{item} is a directory. How ever it does not contain file with {config["name_of_file_with_ids"]}")
                 else:
                     file_pathes = get_directory(item, get_all=False)
+                    
+                    zip_save_location = None
+                    if config["start_mode"] >= 2.1:
+                        zip_save_location = file_pathes[0].parent
+                        
                     rename_directory(
                         file_pathes,
                         ids_df,
+                        custom_zip_path=zip_save_location,
                         custom_zip_name=file_pathes[0].parent.name
                     )   
             else:
