@@ -121,6 +121,8 @@ def main():
                         ids_df,
                         custom_zip_name=file_pathes[0].parent.name
                     )   
+            else:
+                print(f"{item} is not a directory. SKIP")
      
     
                 
