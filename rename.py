@@ -3,23 +3,43 @@ import os
 import zipfile
 import pathlib
 import pandas as pd
-from PIL import Image, UnidentifiedImageError
+from typing import Any
 import warnings
 
-def get_config() -> dict[str]:
-    """Read config.json into dictionary
-    Config file contain: \n
-        - starting mode of the program:
-            - 0 - standart mode. Read ids from the same directory; look for the folder with images; copy images with new names into result folder.
-        - name of csv file with all ids (name_of_file_with_ids)
-        - full Path to folder in which program will be performing actions (path_to_folder_with_pictures)
+
+def get_config() -> dict[str, Any]:
+    """Read config.json into a dictionary.
+
+    Config file should contain:
+    - start_mode (int|float):
+        - 1: Standard mode. Read ids from the directory where script is; look for the folder with images; copy images with new names into result zip that will be located into result folder.
+        - 2: Advanced mode. Read directory with directories; in each child directory look for the ids file; perform separate rename_directory on each directory; resulting zips will be located in the result directory.
+        - 2.1: Advanced mode (different save location). Read directory with directories; in each directory look for the ids file; perform separate rename_directory on each directory; resulting zips will be located in the same folders as photos are processed.
+    - name_of_file_with_ids (str): Name of the CSV file with all IDs.
+    - path_to_folder (str): Full path to the folder for program actions.
 
     Returns:
-        dict[str]: Return dict with configuration
+        Dict[str, Any]: Dictionary with configuration settings.
+    Raises:
+        FileNotFoundError: If config.json is missing.
+        KeyError: If required keys are missing.
+        ValueError: If any configuration value is invalid.
     """
-     
-    with open("config.json") as file_config:
-        return json.load(file_config)
+    try:
+        with open("config.json") as file_config:
+            config:dict[str, Any] = json.load(file_config)
+        
+        # Validate required keys
+        required_keys = {"start_mode", "name_of_file_with_ids", "path_to_folder"}
+        missing_keys = required_keys - set(config.keys())
+        if missing_keys:
+            raise KeyError(f"Missing required configuration keys: {missing_keys}")
+        
+        return config
+    except FileNotFoundError:
+        raise FileNotFoundError("The config.json file is missing.")
+    except json.JSONDecodeError:
+        raise ValueError("The config.json file contains invalid JSON.")
     
     
 def get_ids(name_of_csv_with_ids: str) -> pd.DataFrame:
@@ -98,7 +118,9 @@ def rename_directory(
 def main():
     config = get_config()
     if config["start_mode"] == 1:
-        # Standart mode: read ids from the same directory; look for the folder with images; copy images with new names into result folder.
+        # Standard mode. Read ids from the directory where script is; look for the folder with images; 
+            # copy images with new names into result zip that will be located into result folder.
+
         ids_df = get_ids(config["name_of_file_with_ids"])
         file_pathes = get_directory(config["path_to_folder"], get_all=False)
         rename_directory(
@@ -106,7 +128,9 @@ def main():
             ids_df
         )
     elif config["start_mode"] >= 2:
-        # Advanced mode: read directory with directories; in each directory look for the ids file; perform separate file rename on each directories.
+        # Advanced mode. Read directory with directories; in each child directory look for the ids file; 
+            # perform separate rename_directory on each directory; resulting zips will be located in the result directory.
+        
         high_directory = get_directory(config["path_to_folder"])
         for item in high_directory:
             if item.is_dir():
@@ -119,6 +143,8 @@ def main():
                     
                     zip_save_location = None
                     if config["start_mode"] >= 2.1:
+                        #-Advanced mode (different save location). Resulting zips will be located in the same folders as photos are processed.
+                        
                         zip_save_location = file_pathes[0].parent
                         
                     rename_directory(
