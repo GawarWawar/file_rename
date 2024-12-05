@@ -6,7 +6,8 @@ import warnings
 
 from src.set_up import get_config, get_directory, get_ids
     
-def rename_directory(
+
+def rename_and_zip_photos_in_directory(
     file_pathes: list[pathlib.Path], 
     ids_df: pd.DataFrame,
     custom_zip_path: pathlib.Path|None = None,
@@ -58,13 +59,13 @@ def main():
 
         ids_df = get_ids(config["name_of_file_with_ids"])
         file_pathes = get_directory(config["path_to_folder"], get_all=False)
-        rename_directory(
+        rename_and_zip_photos_in_directory(
             file_pathes,
             ids_df
         )
     elif config["start_mode"] >= 2:
         # Advanced mode. Read directory with directories; in each child directory look for the ids file; 
-            # perform separate rename_directory on each directory; resulting zips will be located in the result directory.
+            # perform separate rename_and_zip_photos_in_directory on each directory; resulting zips will be located in the result directory.
         
         high_directory = get_directory(config["path_to_folder"])
         for item in high_directory:
@@ -82,7 +83,7 @@ def main():
                         
                         zip_save_location = file_pathes[0].parent
                         
-                    rename_directory(
+                    rename_and_zip_photos_in_directory(
                         file_pathes,
                         ids_df,
                         custom_zip_path=zip_save_location,

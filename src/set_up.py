@@ -9,8 +9,8 @@ def get_config() -> dict[str, Any]:
     Config file should contain:
     - start_mode (int|float):
         - 1: Standard mode. Read ids from the directory where script is; look for the folder with images; copy images with new names into result zip that will be located into result folder.
-        - 2: Advanced mode. Read directory with directories; in each child directory look for the ids file; perform separate rename_directory on each directory; resulting zips will be located in the result directory.
-        - 2.1: Advanced mode (different save location). Read directory with directories; in each directory look for the ids file; perform separate rename_directory on each directory; resulting zips will be located in the same folders as photos are processed.
+        - 2: Advanced mode. Read directory with directories; in each child directory look for the ids file; perform separate rename_and_zip_photos_in_directory on each directory; resulting zips will be located in the result directory.
+        - 2.1: Advanced mode (different save location). Read directory with directories; in each directory look for the ids file; perform separate rename_and_zip_photos_in_directory on each directory; resulting zips will be located in the same folders as photos are processed.
     - name_of_file_with_ids (str): Name of the CSV file with all IDs.
     - path_to_folder (str): Full path to the folder for program actions.
 
