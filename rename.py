@@ -1,10 +1,22 @@
 import pathlib
+import datetime
 
 from src.main_process import rename_and_zip_photos_in_directory
 from src.set_up import get_config, get_directory, get_ids
+from src.logger_setup import get_logger, assign_filehandler_to_logger
 
 def main():
     config = get_config()
+    
+    logger = get_logger(
+        f"{config["start_mode"]}",
+        # TODO: set up this as config variable
+        log_level="INFO"
+    )
+    file_handler = assign_filehandler_to_logger(
+        logger=logger
+    )    
+    
     if config["start_mode"] == 1:
         # Standard mode. Read ids from the directory where script is; look for the folder with images; 
             # copy images with new names into result zip that will be located into result folder.
@@ -13,7 +25,8 @@ def main():
         file_pathes = get_directory(config["path_to_folder"], get_all=False)
         rename_and_zip_photos_in_directory(
             file_pathes,
-            ids_df
+            ids_df,
+            logger=logger
         )
     elif config["start_mode"] >= 2:
         # Advanced mode. Read directory with directories; in each child directory look for the ids file; 
@@ -25,7 +38,7 @@ def main():
                 try:
                     ids_df = get_ids(pathlib.Path(item, config["name_of_file_with_ids"]))
                 except FileNotFoundError:
-                    print(f"{item} is a directory. How ever it does not contain file with {config["name_of_file_with_ids"]}")
+                    logger.info(f"{item} is a directory. How ever it does not contain file with {config["name_of_file_with_ids"]}")
                 else:
                     file_pathes = get_directory(item, get_all=False)
                     
@@ -39,12 +52,16 @@ def main():
                         file_pathes,
                         ids_df,
                         custom_zip_path=zip_save_location,
-                        custom_zip_name=file_pathes[0].parent.name
+                        custom_zip_name=file_pathes[0].parent.name,
+                        logger=logger
                     )   
             else:
-                print(f"{item} is not a directory. SKIP")
-     
+                logger.info(f"{item} is not a directory. SKIP")
+    else:
+        logger.info("Start mode is not >= then 1")
     
-                
+    logger.removeHandler(file_handler)
+    
+
 if __name__ == "__main__":
     main()
