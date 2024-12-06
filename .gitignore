@@ -5,9 +5,10 @@ __pycache__
 
 actions.log
 
-# To work without executable folders
+# To work without executable files/folders
 build
 dist
+*.spec
 
 # Name of a folder to store content for easier distribution
 file_rename_transportation
