@@ -1,8 +1,10 @@
 import pathlib
 import datetime
+import warnings
 
 from src.main_process import rename_and_zip_photos_in_directory
 from src.set_up import get_config, get_directory, get_ids
+from src.logger_setup import get_logger, assign_filehandler_to_logger, create_warning_handler
 from src.decorators import try_function
 
 @try_function
@@ -17,6 +19,8 @@ def main():
     file_handler = assign_filehandler_to_logger(
         logger=logger
     )    
+    
+    warnings.showwarning = create_warning_handler(logger)
     
     if config["start_mode"] == 1:
         # Standard mode. Read ids from the directory where script is; look for the folder with images; 

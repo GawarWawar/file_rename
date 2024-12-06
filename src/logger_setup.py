@@ -8,6 +8,11 @@ def exception_hook(exc_type, exc_value, exc_traceback):
        exc_info=(exc_type, exc_value, exc_traceback)
    )
    sys.exit()
+   
+def create_warning_handler(logger):
+    def warn_with_logger(message, category, filename, lineno, file=None, line=None):
+        logger.warning(f"{filename}:{lineno}: {category.__name__}: {message}")
+    return warn_with_logger
 
 def get_logger (
     logger_name: str,
@@ -15,6 +20,8 @@ def get_logger (
 ):     
     logger = logging.getLogger(logger_name)
     logger.setLevel(log_level)
+    logging.captureWarnings(True)
+    
     # sys.excepthook = exception_hook
     
     return logger
