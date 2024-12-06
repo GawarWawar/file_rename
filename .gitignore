@@ -3,5 +3,9 @@
 env
 __pycache__
 
+# To work without executable folders
+dist
+build
+
 # Name of a folder to store content for easier distribution
 file_rename_transportation
