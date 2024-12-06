@@ -3,8 +3,9 @@ import datetime
 
 from src.main_process import rename_and_zip_photos_in_directory
 from src.set_up import get_config, get_directory, get_ids
-from src.logger_setup import get_logger, assign_filehandler_to_logger
+from src.decorators import try_function
 
+@try_function
 def main():
     config = get_config()
     
