@@ -40,7 +40,6 @@ def rename_and_zip_photos_in_directory(
                     try:
                         # Insert copy of the file with a new name in the zip
                         myzip.write(path, f"{id}.{part_code}.png")
-                        print(logger is not None)
                         if logger is not None:
                             # Log which file was added to zip.
                             logger.info(f"'{id}.{part_code}.png' added to {myzip.filename}")
