@@ -1,3 +1,4 @@
+import logging
 import pandas as pd
 import pathlib
 import zipfile
@@ -8,6 +9,7 @@ def rename_and_zip_photos_in_directory(
     ids_df: pd.DataFrame,
     custom_zip_path: pathlib.Path|None = None,
     custom_zip_name: str|None = None,
+    logger: logging.Logger|None = None
 ) -> None:
     """Find all files in path_to_directory and tries to compress them into zip. Process only images in png format with a new name.
     New name will contain id: from ids DF; part_code: image should have a name which is composed of that part code; and file extension - .png.
@@ -38,11 +40,13 @@ def rename_and_zip_photos_in_directory(
                     try:
                         # Insert copy of the file with a new name in the zip
                         myzip.write(path, f"{id}.{part_code}.png")
-                        # Log which file was added to zip.
-                        print(f"'{id}.{part_code}.png' added to {myzip.filename}")
+                        if logger is not None:
+                            # Log which file was added to zip.
+                            logger.info(f"'{id}.{part_code}.png' added to {myzip.filename}")
                     
                     except PermissionError:
-                        print("Operation not permitted.")
+                        logger.info("Operation not permitted.")
                 else:
+                    if logger is not None:
                     # Log which file was not an image.
-                    print(f"{path.name} is not an png image.")
+                        logger.info(f"{path.name} is not an png image.")
