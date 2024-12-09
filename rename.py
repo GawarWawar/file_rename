@@ -28,11 +28,15 @@ def main():
 
         ids_df = get_ids(config["name_of_file_with_ids"])
         file_pathes = get_directory(config["path_to_folder"], get_all=False)
-        rename_and_zip_photos_in_directory(
-            file_pathes,
-            ids_df,
-            logger=logger
-        )
+        if len(file_pathes):
+            ids_df = get_ids(config["name_of_file_with_ids"])
+            rename_and_zip_photos_in_directory(
+                file_pathes,
+                ids_df,
+                logger=logger
+            )
+        else:
+            logger.info(f"{config["path_to_folder"]} doesn't have any files.")
     elif config["start_mode"] >= 2:
         # Advanced mode. Read directory with directories; in each child directory look for the ids file; 
             # perform separate rename_and_zip_photos_in_directory on each directory; resulting zips will be located in the result directory.
@@ -62,6 +66,8 @@ def main():
                     )   
             else:
                 logger.info(f"{item} is not a directory. SKIP")
+        else:
+            logger.info(f"{config["path_to_folder"]} doesnt have any directories.")
     else:
         logger.info("Start mode is not >= then 1")
     
