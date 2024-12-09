@@ -5,22 +5,16 @@ def try_function(func_to_try):
     def inner():    
         try:
             return func_to_try()
-        except Exception as e:
-            config = get_config()
-            
+        except Exception as exception:
             logger = get_logger(
-                f"{config["start_mode"]}",
+                "Error handler",
                 # TODO: set up this as config variable
                 log_level="INFO"
             )
-            file_handler = assign_filehandler_to_logger(
-                logger=logger
-            )
+            file_handler = assign_filehandler_to_logger(logger=logger)
             
-            logger.exception(e)
-            
+            logger.exception(exception)
             logger.removeHandler(file_handler)
-            
-            raise e
+            raise exception
     
     return inner
