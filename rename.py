@@ -26,7 +26,7 @@ def main():
         # Standard mode. Read ids from the directory where script is; look for the folder with images; 
             # copy images with new names into result zip that will be located into result folder.
 
-        ids_df = get_ids(config["name_of_file_with_ids"])
+        # TODO: Add new mode, that has ids.csv into folder
         file_pathes = get_directory(config["path_to_folder"], get_all=False)
         if len(file_pathes):
             ids_df = get_ids(config["name_of_file_with_ids"])
