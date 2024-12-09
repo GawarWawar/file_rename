@@ -1,5 +1,4 @@
 import pathlib
-import datetime
 import warnings
 
 from src.main_process import rename_and_zip_photos_in_directory

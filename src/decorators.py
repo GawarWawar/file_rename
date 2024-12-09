@@ -1,5 +1,4 @@
-from src.set_up import get_config
-from src.logger_setup import get_logger, assign_filehandler_to_logger, standard_logger_set_up
+from src.logger_setup import standard_logger_set_up
 
 def try_function(func_to_try):
     def inner():    
