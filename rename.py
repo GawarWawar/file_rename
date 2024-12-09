@@ -4,22 +4,14 @@ import warnings
 
 from src.main_process import rename_and_zip_photos_in_directory
 from src.set_up import get_config, get_directory, get_ids
-from src.logger_setup import get_logger, assign_filehandler_to_logger, create_warning_handler
+from src.logger_setup import create_warning_handler, standard_logger_set_up
 from src.decorators import try_function
 
 @try_function
 def main():
     config = get_config()
     
-    logger = get_logger(
-        f"{config["start_mode"]}",
-        # TODO: set up this as config variable
-        log_level="INFO"
-    )
-    file_handler = assign_filehandler_to_logger(
-        logger=logger
-    )    
-    
+    logger = standard_logger_set_up(f"{config["start_mode"]}")
     warnings.showwarning = create_warning_handler(logger)
     
     if config["start_mode"] == 1:
@@ -70,8 +62,6 @@ def main():
             logger.info(f"{config["path_to_folder"]} doesnt have any directories.")
     else:
         logger.info("Start mode is not >= then 1")
-    
-    logger.removeHandler(file_handler)
     
 
 if __name__ == "__main__":

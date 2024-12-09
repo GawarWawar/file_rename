@@ -40,3 +40,13 @@ def assign_filehandler_to_logger (
     logger.addHandler(file_handler)
     
     return file_handler
+
+def standard_logger_set_up(logger_name, log_level = "INFO"):
+    logger = get_logger(
+        logger_name,
+        log_level=log_level
+    )
+    assign_filehandler_to_logger(logger=logger)
+    
+    return logger
+
